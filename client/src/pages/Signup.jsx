@@ -1,9 +1,10 @@
+// src/pages/Signup.jsx
 import { useState } from 'react';
-import { login } from '../services/api.js';
 import { useNavigate } from 'react-router-dom';
+import { signup } from '../services/api.js';
 
-function Login() {
-  const [formData, setFormData] = useState({ email: '', password: '' });
+function Signup() {
+  const [formData, setFormData] = useState({ email: '', password: '', username: '' });
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -14,21 +15,16 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await login(formData);
-      if (response.data && response.data.token) {
-        localStorage.setItem('token', response.data.token);
-        navigate('/');
-      } else {
-        setError('Invalid response from server');
-      }
+      const response = await signup(formData);
+      console.log("response: ", response);
     } catch (err) {
-      setError(err.response?.data?.message || 'Login failed');
+      setError(err.response?.data?.message || 'Signup failed');
     }
   };
 
   return (
     <div className="container mx-auto p-4 max-w-md">
-      <h1 className="text-3xl font-bold mb-6 text-center">Login</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">Sign Up</h1>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-lg">
         <div className="mb-4">
@@ -42,6 +38,17 @@ function Login() {
             required
           />
         </div>
+        {/* <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Username</label>
+          <input
+            type="text"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+            required
+          />
+        </div> */}
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Password</label>
           <input
@@ -54,11 +61,11 @@ function Login() {
           />
         </div>
         <button type="submit" className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700">
-          Login
+          Sign Up
         </button>
       </form>
     </div>
   );
 }
 
-export default Login;
+export default Signup;
