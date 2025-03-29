@@ -1,6 +1,6 @@
 const Portfolio = require('../models/Portfolio');
 
-exports.getPortfolioById = async (req, res) => {
+const getPortfolioById = async (req, res) => {
     try {
         const portfolio = await Portfolio.findOne({ userId: req.params.userId });
         if (!portfolio) {
@@ -12,7 +12,7 @@ exports.getPortfolioById = async (req, res) => {
     }
 };
 
-exports.savePortfolio = async (req, res) => {
+const savePortfolio = async (req, res) => {
     try {
         const portfolioData = {
             ...req.body,
@@ -33,8 +33,8 @@ exports.savePortfolio = async (req, res) => {
     }
 };
 
-exports.createPortfolio = async (req, res) => {
-    const {home, about, services, projects, contact} = req.body;
+const createPortfolio = async (req, res) => {
+    const { home, about, services, projects, contact } = req.body;
     try {
         const newPortfolio = new Portfolio({
             home,
@@ -59,7 +59,7 @@ exports.createPortfolio = async (req, res) => {
     }
 }
 
-exports.getUserPortfolio = async (req, res) => {
+const getUserPortfolio = async (req, res) => {
     try {
         const portfolio = await Portfolio.find();
 
@@ -76,3 +76,5 @@ exports.getUserPortfolio = async (req, res) => {
         });
     }
 };
+
+module.exports = { getPortfolioById, savePortfolio, createPortfolio, getUserPortfolio };
