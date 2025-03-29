@@ -35,10 +35,11 @@ const getPortfolioById = asyncHandler(async (req, res) => {
 // @route   GET /api/portfolios/view/:slug
 // @access  Public
 const getPortfolioBySlug = asyncHandler(async (req, res) => {
-    const portfolio = await Portfolio.findOne({
-        slug: req.params.slug,
-        published: true
-    }).populate('user', ['name', 'avatar']);
+    const { slug } = req.params;
+    console.log("slug: ", slug);
+    const portfolio = await Portfolio.findOne({slug}).populate('user', ['name', 'avatar']);
+
+    console.log("portfolio: ", portfolio);
 
     if (!portfolio) {
         res.status(404);

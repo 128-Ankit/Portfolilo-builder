@@ -6,7 +6,7 @@ import generateToken from '../utils/generateToken.js';
 // @route   POST /api/users
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     // Check if user already exists
     const userExists = await User.findOne({ email });
@@ -21,6 +21,7 @@ const registerUser = asyncHandler(async (req, res) => {
         name,
         email,
         password, // Will be encrypted in the pre-save middleware
+        role,
     });
 
     if (user) {
