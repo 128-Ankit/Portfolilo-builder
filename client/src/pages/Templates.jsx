@@ -9,8 +9,7 @@ const Templates = () => {
     const fetchTemplates = async () => {
       try {
         const response = await getTemplates();
-        // const data = await response.json();
-        console.log("response: ",response);
+        console.log("response: ", response);
         setTemplates(response);
       } catch (error) {
         console.error("Error fetching templates:", error);
