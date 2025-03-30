@@ -47,13 +47,13 @@ const TemplateSchema = new mongoose.Schema({
             {
                 name: 'Home',
                 type: 'text',
-                content: { title: '', description: '', image: '' },
+                content: [],
                 order: 1
             },
             {
                 name: 'About',
                 type: 'text',
-                content: { image: '', name: '', aboutDescription: '' },
+                content: [],
                 order: 2
             },
             {

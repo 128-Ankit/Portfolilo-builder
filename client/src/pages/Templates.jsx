@@ -35,10 +35,10 @@ const Templates = () => {
                 <p className="text-sm text-gray-500 mb-2">{template.description}</p>
                 <p className="text-sm text-gray-500 mb-2">{template.category}</p>
                 <Link
-                  to={`/create-portfolio/${template._id}`}
+                  to={`/templates/${template._id}`}
                   className="block text-center bg-blue-500 hover:bg-blue-600 text-white py-2 rounded mt-4"
                 >
-                  Use Template
+                  View Template
                 </Link>
               </div>
             </div>
