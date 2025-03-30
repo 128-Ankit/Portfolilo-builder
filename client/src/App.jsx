@@ -6,6 +6,7 @@ import Profile from "./pages/Profile";
 import PrivateRoute from "./routes/PrivateRoute";
 import Navbar from "./components/common/Navbar";
 import Home from "./pages/Home";
+import Templates from "./pages/Templates";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+          <Route path="/templates" element={<Templates />} />
         </Routes>
       </Router>
     </AuthProvider>
