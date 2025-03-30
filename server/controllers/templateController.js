@@ -30,12 +30,43 @@ const getTemplateById = asyncHandler(async (req, res) => {
 // @route   POST /api/templates
 // @access  Private/Admin
 const createTemplate = asyncHandler(async (req, res) => {
-    const { name, description, sections, theme, category, isDefault, thumbnail } = req.body;
+    const { name, description, theme, category, isDefault, thumbnail } = req.body;
 
     const template = await Template.create({
         name,
         description,
-        sections: sections || [],
+        sections: [
+            {
+                name: 'Home',
+                type: 'text',
+                content: { title: '', description: '', image: '' },
+                order: 1
+            },
+            {
+                name: 'About',
+                type: 'text',
+                content: { image: '', name: '', aboutDescription: '' },
+                order: 2
+            },
+            {
+                name: 'Services',
+                type: 'text',
+                content: [],
+                order: 3
+            },
+            {
+                name: 'Education',
+                type: 'education',
+                content: [],
+                order: 4
+            },
+            {
+                name: 'Contacts',
+                type: 'contact',
+                content: { email: '', phone: '', address: '' },
+                order: 5
+            }
+        ],
         theme: theme || {
             primaryColor: '#4A90E2',
             secondaryColor: '#50E3C2',
@@ -63,21 +94,28 @@ const createTemplate = asyncHandler(async (req, res) => {
 const updateTemplate = asyncHandler(async (req, res) => {
     const template = await Template.findById(req.params.id);
 
-    if (template) {
-        template.name = req.body.name || template.name;
-        template.description = req.body.description || template.description;
-        template.sections = req.body.sections || template.sections;
-        template.theme = req.body.theme || template.theme;
-        template.category = req.body.category || template.category;
-        template.isDefault = req.body.isDefault !== undefined ? req.body.isDefault : template.isDefault;
-        template.thumbnail = req.body.thumbnail || template.thumbnail;
-
-        const updatedTemplate = await template.save();
-        res.json(updatedTemplate);
-    } else {
+    if (!template) {
         res.status(404);
         throw new Error('Template not found');
     }
+
+    template.name = req.body.name || template.name;
+    template.description = req.body.description || template.description;
+    template.category = req.body.category || template.category;
+    template.isDefault = req.body.isDefault !== undefined ? req.body.isDefault : template.isDefault;
+    template.thumbnail = req.body.thumbnail || template.thumbnail;
+
+    if (req.body.theme) {
+        template.theme = req.body.theme;
+    }
+
+    // Allow updating sections
+    if (req.body.sections) {
+        template.sections = req.body.sections;
+    }
+
+    const updatedTemplate = await template.save();
+    res.json(updatedTemplate);
 });
 
 export { getTemplates, getTemplateById, createTemplate, updateTemplate };

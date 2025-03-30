@@ -13,6 +13,7 @@ router.route('/')
     .get(getTemplates)
     .post(protect, admin, createTemplate);
 
+//pass template id to update
 router.route('/:id')
     .get(getTemplateById)
     .put(protect, admin, updateTemplate);

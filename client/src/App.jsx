@@ -1,31 +1,22 @@
-// src/App.jsx
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar.jsx';
-import Home from './pages/Home.jsx';
-import Signup from './pages/Signup.jsx';
-import Login from './pages/Login.jsx';
-import TemplateSelection from './pages/TemplateSelection.jsx';
-import Editor from './pages/Editor.jsx';
-import SinglePortfolio from './pages/SinglePortfolio.jsx';
-// import PortfolioView from './pages/PortfolioView.jsx';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import AuthProvider from "./context/AuthContext";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Profile from "./pages/Profile";
+import PrivateRoute from "./routes/PrivateRoute";
 
-function App() {
+const App = () => {
   return (
-    <Router>
-      <div className="min-h-screen bg-gray-100">
-        <Navbar />
+    <AuthProvider>
+      <Router>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/templates" element={<TemplateSelection />} />
-          <Route path="/editor/:templateId" element={<Editor />} />
-          {/* <Route path="/portfolio/:portfolioId" element={<PortfolioView />} /> */}
-          <Route path="/single-portfolio/:portfolioId" element={<SinglePortfolio />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
         </Routes>
-      </div>
-    </Router>
+      </Router>
+    </AuthProvider>
   );
-}
+};
 
 export default App;

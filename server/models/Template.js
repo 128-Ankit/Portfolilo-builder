@@ -41,7 +41,47 @@ const TemplateSchema = new mongoose.Schema({
     thumbnail: {
         type: String
     },
-    sections: [SectionSchema],
+    sections: {
+        type: [SectionSchema],
+        default: [
+            {
+                name: 'Home',
+                type: 'text',
+                content: { title: '', description: '', image: '' },
+                order: 1
+            },
+            {
+                name: 'About',
+                type: 'text',
+                content: { image: '', name: '', aboutDescription: '' },
+                order: 2
+            },
+            {
+                name: 'Services',
+                type: 'text',
+                content: [],
+                order: 3
+            },
+            {
+                name: 'Education',
+                type: 'education',
+                content: [],
+                order: 4
+            },
+            {
+                name: 'Projects',
+                type: 'text',
+                content: [],
+                order: 5
+            },
+            {
+                name: 'Contacts',
+                type: 'contact',
+                content: { email: '', phone: '', address: '' },
+                order: 6
+            }
+        ]
+    },
     theme: {
         type: mongoose.Schema.Types.Mixed,
         default: {
