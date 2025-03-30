@@ -10,6 +10,7 @@ const RegisterForm = () => {
     name: "",
     email: "",
     password: "",
+    avatar: "",
     role: "user"
   });
   const [error, setError] = useState("");
@@ -74,6 +75,14 @@ const RegisterForm = () => {
             required
             onChange={handleChange}
             placeholder="••••••••"
+          />
+          <AuthInput
+            label="Avatar"
+            type="text"
+            name="avatar"
+            required
+            onChange={handleChange}
+            placeholder="Your image url..."
           />
           <div>
             <label htmlFor="role" className="block text-sm font-medium text-blue-300">Role</label>
