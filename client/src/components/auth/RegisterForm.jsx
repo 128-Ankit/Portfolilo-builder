@@ -41,8 +41,8 @@ const RegisterForm = () => {
   return (
     <AuthLayout {...authContent}>
       <div className="mb-8 relative">
-        <h2 className="text-3xl font-bold text-white mb-2">Create Account</h2>
-        <p className="text-blue-200/60">Join our community of innovators</p>
+        <h2 className="text-3xl font-bold text-blue-500 mb-2">Create Account</h2>
+        <p className="text-gray-800">Join our community of innovators</p>
       </div>
 
       {error && (
@@ -76,39 +76,39 @@ const RegisterForm = () => {
             onChange={handleChange}
             placeholder="••••••••"
           />
+          <div>
+            <label htmlFor="role" className="block text-sm font-medium text-gray-800">Role</label>
+            <select
+              name="role"
+              onChange={handleChange}
+              value={formData.role}
+              className="mt-1 block w-full border border-blue-800/50 rounded-lg px-4 py-2 text-black focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+            >
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
           <AuthInput
-            label="Avatar"
+            label="Aatar"
             type="text"
             name="avatar"
             required
             onChange={handleChange}
             placeholder="Your image url..."
           />
-          <div>
-            <label htmlFor="role" className="block text-sm font-medium text-blue-300">Role</label>
-            <select
-              name="role"
-              onChange={handleChange}
-              value={formData.role}
-              className="mt-1 block w-full bg-blue-950/30 border border-blue-800/50 rounded-lg px-4 py-2 text-blue-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-            >
-              <option value="user">User</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
         </div>
 
         <button
           type="submit"
-          className="w-full py-3 px-4 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#020420] transition-all duration-200 border border-white/10 hover:border-white/25"
+          className="w-full px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
         >
           Create Account
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-blue-200/60">
+      <p className="mt-6 text-center text-sm text-gray-800">
         Already have an account?{' '}
-        <Link to="/login" className="font-medium text-blue-400 hover:text-blue-300 transition-colors">
+        <Link to="/login" className="font-medium text-blue-500">
           Sign in
         </Link>
       </p>

@@ -35,8 +35,8 @@ const LoginForm = () => {
   return (
     <AuthLayout {...authContent}>
       <div className="mb-8 relative">
-        <h2 className="text-3xl font-bold text-white mb-2">Sign In</h2>
-        <p className="text-blue-200/60">Access your account</p>
+        <h2 className="text-3xl font-bold text-blue-500 mb-2">Login</h2>
+        <p className="text-gray-800">Access your account</p>
       </div>
 
       {error && (
@@ -68,24 +68,24 @@ const LoginForm = () => {
         <div className="flex items-center justify-between text-sm">
           <label className="flex items-center text-blue-200/60">
             <input type="checkbox" className="rounded border-blue-800/50 text-blue-500 focus:ring-blue-500 bg-blue-950/30" />
-            <span className="ml-2">Remember me</span>
+            <span className="ml-2 text-gray-800">Remember me</span>
           </label>
-          <a href="#" className="font-medium text-blue-400 hover:text-blue-300 transition-colors">
+          <Link to={"/forget-password"} className="font-medium text-blue-500">
             Forgot password?
-          </a>
+          </Link>
         </div>
 
         <button
           type="submit"
-          className="w-full py-3 px-4 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#020420] transition-all duration-200 border border-white/10 hover:border-white/25"
+          className="w-full py-3 px-4 rounded-lg text-sm font-medium text-white bg-blue-500"
         >
-          Sign in
+          Login
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-blue-200/60">
+      <p className="mt-6 text-center text-sm text-gray-800">
         Don't have an account?{' '}
-        <Link to="/register" className="font-medium text-blue-400 hover:text-blue-300 transition-colors">
+        <Link to="/register" className="font-medium text-blue-500">
           Create account
         </Link>
       </p>
