@@ -1,28 +1,51 @@
-const express = require('express');
-const cors = require('cors');
-const connectDB = require('./config/db');
-require('dotenv').config();
+import express from 'express';
+import dotenv from 'dotenv';
+import colors from 'colors';
+import morgan from 'morgan';
+import cors from 'cors';
+import connectDB from './config/db.js';
+import { notFound, errorHandler } from './middleware/errorHandler.js';
+
+// Routes
+import authRoutes from './routes/auth.js';
+import userRoutes from './routes/users.js';
+import templateRoutes from './routes/templates.js';
+import portfolioRoutes from './routes/portfolios.js';
+
+// Load env vars
+dotenv.config();
+
+// Connect to database
+connectDB();
 
 const app = express();
+
+// Dev logging middleware
+if (process.env.NODE_ENV === 'development') {
+    app.use(morgan('dev'));
+}
 
 // Middleware
 app.use(express.json());
 app.use(cors());
 
-// Connect to Database
-connectDB();
+// Mount routes
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/templates', templateRoutes);
+app.use('/api/portfolios', portfolioRoutes);
 
-// Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/portfolio', require('./routes/portfolio'));
-
-// Error handling
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ error: 'Something went wrong!' });
+// Base route
+app.get('/', (req, res) => {
+    res.send('API is running...');
 });
 
+// Error middleware
+app.use(notFound);
+app.use(errorHandler);
+
 const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold);
 });

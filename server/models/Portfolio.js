@@ -1,51 +1,111 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+import slugify from 'slugify';
 
-const portfolioSchema = new mongoose.Schema({
-    userId: {
+const PortfolioSchema = new mongoose.Schema({
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
+        required: true
     },
-    home: {
-        title: { type: String, default: 'Welcome to My Portfolio' },
-        description: { type: String, default: 'This is a brief introduction to who I am and what I do.' }
+    name: {
+        type: String,
+        required: [true, 'Portfolio name is required'],
+        trim: true
     },
-    about: {
-        bio: { type: String, default: 'I am a passionate individual with skills in various areas. This is my story.' },
-        image: { type: String, default: '' }
+    baseTemplate: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Template',
+        required: true
     },
-    services: [{
-        title: { type: String, default: 'Service Title' },
-        description: { type: String, default: 'Description of the service I offer.' }
-    }],
-    projects: [{
-        title: { type: String, default: 'Project Title' },
-        description: { type: String, default: 'Description of this amazing project.' },
-        image: { type: String, default: '' }
-    }],
-    contact: {
-        email: { type: String, default: '' },
-        phone: { type: String, default: '' },
-        socialLinks: {
-            twitter: { type: String, default: '' },
-            linkedin: { type: String, default: '' },
-            github: { type: String, default: '' }
+    slug: {
+        type: String,
+        unique: true
+    },
+    customDomain: {
+        type: String,
+        unique: true,
+        sparse: true
+    },
+    sections: [
+        {
+            name: {
+                type: String,
+                required: true
+            },
+            type: {
+                type: String,
+                required: true,
+                enum: ['text', 'image', 'gallery', 'contact', 'social', 'experience', 'skills', 'education', 'projects']
+            },
+            content: {
+                type: mongoose.Schema.Types.Mixed,
+                required: true
+            },
+            order: {
+                type: Number,
+                required: true
+            },
+            isActive: {
+                type: Boolean,
+                default: true
+            },
+            config: {
+                type: mongoose.Schema.Types.Mixed,
+                default: {}
+            }
+        }
+    ],
+    theme: {
+        type: mongoose.Schema.Types.Mixed,
+        required: true
+    },
+    seo: {
+        title: String,
+        description: String,
+        keywords: [String]
+    },
+    analytics: {
+        trackingId: String,
+        enabled: {
+            type: Boolean,
+            default: false
         }
     },
-    updatedAt: {
-        type: Date,
-        default: Date.now
+    published: {
+        type: Boolean,
+        default: false
+    },
+    viewCount: {
+        type: Number,
+        default: 0
     }
+}, {
+    timestamps: true
 });
 
-// Set default services and projects arrays if not provided
-portfolioSchema.pre('save', function (next) {
-    if (!this.services.length) {
-        this.services = [{ title: 'Service 1', description: 'Default service description' }];
+// Generate slug before saving
+PortfolioSchema.pre('save', async function (next) {
+    if (this.isNew || this.isModified('name')) {
+        const baseSlug = slugify(this.name, { lower: true });
+        let slug = baseSlug;
+        let counter = 1;
+
+        // Check for existing slug
+        let existingPortfolio = await mongoose.model('Portfolio').findOne({ slug });
+
+        // If slug exists, append a counter until unique
+        while (existingPortfolio) {
+            slug = `${baseSlug}-${counter}`;
+            counter++;
+            existingPortfolio = await mongoose.model('Portfolio').findOne({ slug });
+        }
+
+        this.slug = slug;
     }
-    if (!this.projects.length) {
-        this.projects = [{ title: 'Project 1', description: 'Default project description' }];
-    }
+
     next();
 });
 
-module.exports = mongoose.model('Portfolio', portfolioSchema);
+const Portfolio = mongoose.model('Portfolio', PortfolioSchema);
+
+export default Portfolio;
